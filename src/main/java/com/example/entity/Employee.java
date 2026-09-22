@@ -1,35 +1,24 @@
-package com.example.model;
+package com.example.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
-@Table(name = "employees")
+@Table(name = "employee")
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @Column(nullable = false)
     private String name;
-
-    @Column(nullable = false, unique = true)
     private String email;
-
     private String department;
-
     private double salary;
 
     public Employee() {
     }
 
-    public Employee(int id, String name, String email, String department, double salary) {
-        this.id = id;
+    public Employee(String name, String email, String department, double salary) {
         this.name = name;
         this.email = email;
         this.department = department;

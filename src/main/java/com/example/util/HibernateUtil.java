@@ -1,36 +1,19 @@
 package com.example.util;
 
-import com.example.model.Employee;
-import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import org.hibernate.cfg.Configuration;
-import org.hibernate.service.ServiceRegistry;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.Persistence;
 
 public class HibernateUtil {
 
-    private static final SessionFactory SESSION_FACTORY = buildSessionFactory();
+    private static final EntityManagerFactory entityManagerFactory =
+            Persistence.createEntityManagerFactory("employeePU");
 
-    private static SessionFactory buildSessionFactory() {
-        try {
-            Configuration configuration = new Configuration();
-            configuration.configure("hibernate.cfg.xml"); // loaded from classpath (src/main/resources)
-            configuration.addAnnotatedClass(Employee.class);
-
-            ServiceRegistry registry = new StandardServiceRegistryBuilder()
-                    .applySettings(configuration.getProperties())
-                    .build();
-
-            return configuration.buildSessionFactory(registry);
-        } catch (Throwable ex) {
-            throw new ExceptionInInitializerError("SessionFactory creation failed: " + ex);
-        }
-    }
-
-    public static SessionFactory getSessionFactory() {
-        return SESSION_FACTORY;
+    public static EntityManager getEntityManager() {
+        return entityManagerFactory.createEntityManager();
     }
 
     public static void shutdown() {
-        getSessionFactory().close();
+        entityManagerFactory.close();
     }
 }
